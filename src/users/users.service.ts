@@ -27,21 +27,21 @@ export class UsersService {
 
     async create(user: UserEntity): Promise<UserEntity> {
         const existing = await this.userRepository.findOne({ username: user.username });
-        if (existing) throw { code: "400", message: "账号已存在" };
+        if (existing) throw { code: "400", message: "Not exist" };
         user.password = this.cryptoUtil.encryptPassword(user.password);
         return this.userRepository.save(this.userRepository.create(user));
     }
 
     /**
-     * 用户登录
+     * Login
      *
-     * @param account 登录账号
-     * @param password 登录密码
+     * @param account 
+     * @param password 
      */
     async login(name: string, password: string): Promise<String> {
         const user = await this.userRepository.findOne({username:name});
-        if (!user) throw new HttpException('登录账号有误', 406);
-        if (!this.cryptoUtil.checkPassword(password, user.password)) throw new HttpException('登录密码有误', 406);
+        if (!user) throw new HttpException('Not exist', 406);
+        if (!this.cryptoUtil.checkPassword(password, user.password)) throw new HttpException('Not correct', 406);
         const { id } = user;
         const payload = {
             id, name

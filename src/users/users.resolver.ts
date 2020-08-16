@@ -49,6 +49,6 @@ export class UsersResolver {
     @Mutation('createUser')
     async createUser(@Args('user') user): Promise<Result> {
         await this.usersService.create(user);
-        return { code: 200, message: '注册成功' }
+        return { code: 200, message: 'Sacces' }
     }
 }
